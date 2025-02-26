@@ -1,0 +1,59 @@
+food-delivery-backend/
+│── api-gateway/                 # API Gateway (RBAC & Routing)
+│   ├── cmd/api/main.go          # Entry point for API Gateway
+│   ├── internal/
+│   │   ├── middleware/          # JWT & Role-Based Access
+│   │   │   ├── authMiddleware.go
+│   │   ├── proxy/               # Reverse Proxy Logic
+│   │   │   ├── reverseProxy.go
+│   │   ├── routes/              # API Gateway Routes
+│   │   │   ├── gatewayRoutes.go
+│   ├── go.mod
+│   ├── go.sum
+│
+│── auth-service/                 # Authentication Service (Login, JWT)
+│   ├── cmd/api/main.go
+│   ├── internal/controllers/authController.go
+│   ├── internal/services/authService.go
+│   ├── go.mod
+│   ├── go.sum
+│
+│── customer-service/             # Manages customers & restaurants
+│   ├── cmd/api/main.go
+│   ├── internal/controllers/customerController.go
+│   ├── internal/services/customerService.go
+│   ├── go.mod
+│   ├── go.sum
+│
+│── order-service/                # Handles orders (Only for Restaurant Managers)
+│   ├── cmd/api/main.go
+│   ├── internal/controllers/orderController.go
+│   ├── internal/services/orderService.go
+│   ├── go.mod
+│   ├── go.sum
+│
+│── admin-service/                # Admin Panel (Only for Admins)
+│   ├── cmd/api/main.go
+│   ├── internal/controllers/adminController.go
+│   ├── internal/services/adminService.go
+│   ├── go.mod
+│   ├── go.sum
+│
+│── menu-service/                 # Manages restaurant menus
+│   ├── cmd/api/main.go
+│   ├── internal/controllers/menuController.go
+│   ├── internal/services/menuService.go
+│   ├── go.mod
+│   ├── go.sum
+│
+│── database/                     # Shared Database Configuration (Optional)
+│   ├── redis/redis.go
+│   ├── postgres/postgres.go
+│
+│── go.mod                         # Root Go module (Optional)
+│── go.sum
+│── docker-compose.yml              # Dockerized Deployment
+│── README.md
+
+
+Admin-Service
