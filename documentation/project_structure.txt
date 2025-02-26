@@ -57,3 +57,25 @@ food-delivery-backend/
 
 
 Admin-Service
+
+INSERT INTO users (username, password, role) VALUES
+('user1', 'pass123', 'admin'),
+('user2', 'pass456', 'user'),
+('user3', 'pass789', 'restmanager'),
+('user4', 'pass234', 'admin'),
+('user5', 'pass567', 'user'),
+('user6', 'pass890', 'restmanager'),
+('user7', 'pass321', 'manager'),
+('user8', 'pass654', 'admin'),
+('user9', 'pass987', 'user'),
+('user10', 'pass147', 'restmanager'),
+('user11', 'pass258', 'manager'),
+('user12', 'pass369', 'admin'),
+('user13', 'pass159', 'user'),
+('user14', 'pass753', 'restmanager'),
+('user15', 'pass852', 'manager'),
+('user16', 'pass951', 'admin'),
+('user17', 'pass357', 'user'),
+('user18', 'pass1234', 'restmanager'),
+('user19', 'pass5678', 'manager'),
+('user20', 'pass9876', 'admin');

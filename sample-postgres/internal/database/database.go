@@ -15,19 +15,17 @@ import (
 
 // Service represents a service that interacts with a database.
 type Service interface {
+	// Health returns a map of health status information.
+	// The keys and values in the map are service-specific.
 	Health() map[string]string
+
+	// Close terminates the database connection.
+	// It returns an error if the connection cannot be closed.
 	Close() error
-	GetUser(username string) (*User, error) // New function to fetch user from DB
 }
 
 type service struct {
 	db *sql.DB
-}
-
-type User struct {
-	Username string
-	Password string
-	Role     string
 }
 
 var (
@@ -54,19 +52,6 @@ func New() Service {
 		db: db,
 	}
 	return dbInstance
-}
-
-func (s *service) GetUser(username string) (*User, error) {
-	var user User
-	query := "SELECT username, password, role FROM users WHERE username = $1"
-	err := s.db.QueryRow(query, username).Scan(&user.Username, &user.Password, &user.Role)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, fmt.Errorf("user not found")
-		}
-		return nil, err
-	}
-	return &user, nil
 }
 
 // Health checks the health of the database connection by pinging the database.

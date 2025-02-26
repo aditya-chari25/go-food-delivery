@@ -5,7 +5,6 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"auth-service/internal/controllers"
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
@@ -21,7 +20,6 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.GET("/", s.HelloWorldHandler)
 
 	r.GET("/health", s.healthHandler)
-	r.POST("/login", controllers.Login)
 
 	return r
 }
@@ -34,7 +32,5 @@ func (s *Server) HelloWorldHandler(c *gin.Context) {
 }
 
 func (s *Server) healthHandler(c *gin.Context) {
-	resp := make(map[string]string)
-	resp["message"] = "Hello World"
-	c.JSON(http.StatusOK, resp)
+	c.JSON(http.StatusOK, s.db.Health())
 }

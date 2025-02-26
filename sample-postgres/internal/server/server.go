@@ -9,12 +9,13 @@ import (
 
 	_ "github.com/joho/godotenv/autoload"
 
+	"sample-postgres/internal/database"
 )
 
 type Server struct {
 	port int
 
-	// db database.Service
+	db database.Service
 }
 
 func NewServer() *http.Server {
@@ -22,7 +23,7 @@ func NewServer() *http.Server {
 	NewServer := &Server{
 		port: port,
 
-		// db: database.New(),
+		db: database.New(),
 	}
 
 	// Declare Server config
