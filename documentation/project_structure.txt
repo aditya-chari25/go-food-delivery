@@ -58,6 +58,16 @@ food-delivery-backend/
 
 Admin-Service
 
+psql -U postgres -d food-delivery-database
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(20) CHECK (role IN ('admin', 'user', 'restmanager', 'manager'))
+);
+
+
 INSERT INTO users (username, password, role) VALUES
 ('user1', 'pass123', 'admin'),
 ('user2', 'pass456', 'user'),

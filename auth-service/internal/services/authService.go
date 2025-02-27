@@ -38,3 +38,17 @@ func AuthenticateUser(username, password string) (string, error) {
 	// Generate JWT token with role
 	return utils.GenerateToken(user.Username, user.Role)
 }
+
+func VerifyUser(token string)(string, error) {
+	claims,err := utils.ValidateToken(token);
+	if err != nil{
+		log.Println("error:",err)
+		return "",err
+	}
+	log.Println(claims)
+	username, ok1 := claims["username"].(string)
+	if !ok1{
+		log.Fatal("Error extracting JWT claims")
+	}
+	return username,nil
+}
