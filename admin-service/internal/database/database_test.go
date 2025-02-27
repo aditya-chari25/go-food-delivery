@@ -4,49 +4,65 @@ import (
 	"context"
 	"log"
 	"testing"
+	"time"
 
 	"github.com/testcontainers/testcontainers-go"
-	"github.com/testcontainers/testcontainers-go/modules/redis"
+	"github.com/testcontainers/testcontainers-go/modules/postgres"
+	"github.com/testcontainers/testcontainers-go/wait"
 )
 
-func mustStartRedisContainer() (func(context.Context, ...testcontainers.TerminateOption) error, error) {
-	dbContainer, err := redis.Run(
+func mustStartPostgresContainer() (func(context.Context, ...testcontainers.TerminateOption) error, error) {
+	var (
+		dbName = "database"
+		dbPwd  = "password"
+		dbUser = "user"
+	)
+
+	dbContainer, err := postgres.Run(
 		context.Background(),
-		"docker.io/redis:7.2.4",
-		redis.WithSnapshotting(10, 1),
-		redis.WithLogLevel(redis.LogLevelVerbose),
+		"postgres:latest",
+		postgres.WithDatabase(dbName),
+		postgres.WithUsername(dbUser),
+		postgres.WithPassword(dbPwd),
+		testcontainers.WithWaitStrategy(
+			wait.ForLog("database system is ready to accept connections").
+				WithOccurrence(2).
+				WithStartupTimeout(5*time.Second)),
 	)
 	if err != nil {
 		return nil, err
 	}
+
+	database = dbName
+	password = dbPwd
+	username = dbUser
 
 	dbHost, err := dbContainer.Host(context.Background())
 	if err != nil {
 		return dbContainer.Terminate, err
 	}
 
-	dbPort, err := dbContainer.MappedPort(context.Background(), "6379/tcp")
+	dbPort, err := dbContainer.MappedPort(context.Background(), "5432/tcp")
 	if err != nil {
 		return dbContainer.Terminate, err
 	}
 
-	address = dbHost
+	host = dbHost
 	port = dbPort.Port()
-	database = "0"
 
 	return dbContainer.Terminate, err
 }
 
 func TestMain(m *testing.M) {
-	teardown, err := mustStartRedisContainer()
+	teardown, err := mustStartPostgresContainer()
 	if err != nil {
-		log.Fatalf("could not start redis container: %v", err)
+		log.Fatalf("could not start postgres container: %v", err)
 	}
 
 	m.Run()
 
 	if teardown != nil && teardown(context.Background()) != nil {
-		log.Fatalf("could not teardown redis container: %v", err)
+		log.Fatalf("could not teardown postgres container: %v", err)
 	}
 }
 
@@ -62,11 +78,23 @@ func TestHealth(t *testing.T) {
 
 	stats := srv.Health()
 
-	if stats["redis_status"] != "up" {
-		t.Fatalf("expected status to be up, got %s", stats["redis_status"])
+	if stats["status"] != "up" {
+		t.Fatalf("expected status to be up, got %s", stats["status"])
 	}
 
-	if _, ok := stats["redis_version"]; !ok {
-		t.Fatalf("expected redis_version to be present, got %v", stats["redis_version"])
+	if _, ok := stats["error"]; ok {
+		t.Fatalf("expected error not to be present")
+	}
+
+	if stats["message"] != "It's healthy" {
+		t.Fatalf("expected message to be 'It's healthy', got %s", stats["message"])
+	}
+}
+
+func TestClose(t *testing.T) {
+	srv := New()
+
+	if srv.Close() != nil {
+		t.Fatalf("expected Close() to return nil")
 	}
 }
