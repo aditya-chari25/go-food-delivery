@@ -71,7 +71,7 @@ func (s *service) GetAllUsers() ([]User, error) {
 		if err := rows.Scan(&user.Username, &user.Password, &user.Role); err != nil {
 			return nil, err
 		}
-		log.Println(user)
+		// log.Println(user)
 		users = append(users, user)
 	}
 
@@ -79,7 +79,7 @@ func (s *service) GetAllUsers() ([]User, error) {
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
-	log.Println(users)
+	// log.Println(users)
 	return users, nil
 }
 

@@ -26,7 +26,6 @@ func RoleMiddleware()gin.HandlerFunc{
 			return
 		}
 		tokenString := parts[1]
-		log.Println(tokenString)
 		// Parse and validate the JWT token
 
 		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {

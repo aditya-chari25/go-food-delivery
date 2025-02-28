@@ -30,7 +30,6 @@ func GetUsersData()(string, error){
 		// fmt.Println("---------------------")
 		users = append(users, User{Username: userextract.Username, Password: userextract.Password, Role: userextract.Role})
 	}
-	log.Println(users)
 	jsonData, err := json.Marshal(users)
 	if err != nil {
 		return "", err
