@@ -1,0 +1,117 @@
+[
+  {
+    "restaurant_id": "1",
+    "name": "The Bombay Canteen",
+    "address": {
+      "street": "Kamala Mills Compound",
+      "area": "Lower Parel",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400013",
+      "latitude": 18.9929,
+      "longitude": 72.8258
+    },
+    "phone": "+91-9876543210",
+    "cuisine_type": "Modern Indian",
+    "rating": 4.8,
+    "menus": [
+      { "name": "Chicken Keema Pao", "price": 349, "category": "Appetizer", "available": true },
+      { "name": "Paneer Khurchan Roll", "price": 399, "category": "Main Course", "available": true },
+      { "name": "Chili Cheese Kulcha", "price": 299, "category": "Snack", "available": true },
+      { "name": "Old Monk Gulab Jamun", "price": 199, "category": "Dessert", "available": true },
+      { "name": "Masala Whiskey Sour", "price": 499, "category": "Beverage", "available": true }
+    ]
+  },
+  {
+    "restaurant_id": "2",
+    "name": "Bastian",
+    "address": {
+      "street": "Linking Road",
+      "area": "Bandra West",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400050",
+      "latitude": 19.0665,
+      "longitude": 72.8312
+    },
+    "phone": "+91-8765432109",
+    "cuisine_type": "Continental & Seafood",
+    "rating": 4.7,
+    "menus": [
+      { "name": "Lobster Thermidor", "price": 1599, "category": "Main Course", "available": true },
+      { "name": "Truffle Mac & Cheese", "price": 899, "category": "Main Course", "available": true },
+      { "name": "Baked Crab Hand Rolls", "price": 649, "category": "Appetizer", "available": true },
+      { "name": "Salted Caramel Cheesecake", "price": 499, "category": "Dessert", "available": true },
+      { "name": "Berry Sangria", "price": 599, "category": "Beverage", "available": true }
+    ]
+  },
+  {
+    "restaurant_id": "3",
+    "name": "Shree Thaker Bhojanalay",
+    "address": {
+      "street": "31, Dadiseth Agiyari Lane",
+      "area": "Kalbadevi",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400002",
+      "latitude": 18.9490,
+      "longitude": 72.8277
+    },
+    "phone": "+91-7654321098",
+    "cuisine_type": "Gujarati Thali",
+    "rating": 4.6,
+    "menus": [
+      { "name": "Gujarati Thali", "price": 550, "category": "Main Course", "available": true },
+      { "name": "Aamras", "price": 199, "category": "Dessert", "available": true },
+      { "name": "Khandvi", "price": 120, "category": "Snack", "available": true },
+      { "name": "Farsan (Dhokla, Patra)", "price": 150, "category": "Appetizer", "available": true },
+      { "name": "Chaas (Buttermilk)", "price": 80, "category": "Beverage", "available": true }
+    ]
+  },
+  {
+    "restaurant_id": "4",
+    "name": "Peshawri - ITC Maratha",
+    "address": {
+      "street": "Sahar Road",
+      "area": "Andheri East",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400099",
+      "latitude": 19.1006,
+      "longitude": 72.8747
+    },
+    "phone": "+91-6543210987",
+    "cuisine_type": "North Indian & Mughlai",
+    "rating": 4.9,
+    "menus": [
+      { "name": "Dal Bukhara", "price": 995, "category": "Main Course", "available": true },
+      { "name": "Murgh Malai Kebab", "price": 799, "category": "Appetizer", "available": true },
+      { "name": "Barrah Kebab", "price": 1099, "category": "Main Course", "available": true },
+      { "name": "Tandoori Roti", "price": 150, "category": "Bread", "available": true },
+      { "name": "Lassi", "price": 250, "category": "Beverage", "available": true }
+    ]
+  },
+  {
+    "restaurant_id": "5",
+    "name": "O Pedro",
+    "address": {
+      "street": "Unit 2, Jet Airways - Godrej BKC",
+      "area": "Bandra Kurla Complex",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400051",
+      "latitude": 19.0673,
+      "longitude": 72.8703
+    },
+    "phone": "+91-5432109876",
+    "cuisine_type": "Goan & Portuguese",
+    "rating": 4.7,
+    "menus": [
+      { "name": "Pork Vindaloo", "price": 699, "category": "Main Course", "available": true },
+      { "name": "Bebinca", "price": 349, "category": "Dessert", "available": true },
+      { "name": "Goan Prawn Curry", "price": 799, "category": "Main Course", "available": true },
+      { "name": "Poi Bread", "price": 120, "category": "Bread", "available": true },
+      { "name": "Feni Cocktail", "price": 499, "category": "Beverage", "available": true }
+    ]
+  }
+]

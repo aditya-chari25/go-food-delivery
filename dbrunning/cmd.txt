@@ -1,0 +1,8 @@
+MongoDB :-
+a) brew services start mongodb-community
+b) brew services stop mongodb-community
+
+Postgres-SQL :-
+a) psql -U postgres -d food-delivery-database
+
+Use golang v1 version for connection.

@@ -23,6 +23,7 @@ func GenerateToken(username, role string) (string, error) {
 
 // ValidateToken verifies the JWT token
 func ValidateToken(tokenString string) (jwt.MapClaims, error) {
+	log.Println(tokenString)
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		// Validate signing method
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {

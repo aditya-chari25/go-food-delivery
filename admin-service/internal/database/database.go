@@ -8,7 +8,9 @@ import (
 	"os"
 	"strconv"
 	"time"
-
+	"go.mongodb.org/mongo-driver/mongo"
+    "go.mongodb.org/mongo-driver/mongo/options"
+    "go.mongodb.org/mongo-driver/v2/mongo/readpref"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -22,6 +24,8 @@ type Service interface {
 
 type service struct {
 	db *sql.DB
+	mongoDB    *mongo.Client
+	mongoColl  *mongo.Collection
 }
 
 type User struct {
@@ -37,6 +41,9 @@ var (
 	port       = os.Getenv("BLUEPRINT_DB_PORT")
 	host       = os.Getenv("BLUEPRINT_DB_HOST")
 	schema     = os.Getenv("BLUEPRINT_DB_SCHEMA")
+	mongoURI  = os.Getenv("MONGO_URI")  // Example: "mongodb://localhost:27017"
+	mongoDB   = os.Getenv("MONGO_DB")   // Example: "food_delivery"
+	mongoColl = os.Getenv("MONGO_COLL") // Example: "users"
 	dbInstance *service
 )
 
@@ -45,13 +52,27 @@ func New() Service {
 	if dbInstance != nil {
 		return dbInstance
 	}
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&search_path=%s", username, password, host, port, database, schema)
 	db, err := sql.Open("pgx", connStr)
 	if err != nil {
 		log.Fatal(err)
 	}
+	clientOptions := options.Client().ApplyURI(mongoURI)
+	mongoClient, err := mongo.Connect(ctx, clientOptions)
+	if err != nil {
+		log.Fatalf("MongoDB Connection Error: %v", err)
+	}
+
+
+	mongoCollection := mongoClient.Database(mongoDB).Collection(mongoColl)
+
 	dbInstance = &service{
 		db: db,
+		mongoDB:    mongoClient,
+		mongoColl:  mongoCollection,
 	}
 	return dbInstance
 }

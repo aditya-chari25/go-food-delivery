@@ -3,7 +3,7 @@ package middleware
 import (
 	"net/http"
 	"strings"
-	"log"
+	// "log" 
 	"errors"
 
 	"github.com/gin-gonic/gin"
