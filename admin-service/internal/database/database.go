@@ -9,8 +9,9 @@ import (
 	"strconv"
 	"time"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/bson"
     "go.mongodb.org/mongo-driver/mongo/options"
-    "go.mongodb.org/mongo-driver/v2/mongo/readpref"
+    // "go.mongodb.org/mongo-driver/v2/mongo/readpref"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -20,11 +21,12 @@ type Service interface {
 	Health() map[string]string
 	Close() error
 	GetAllUsers() ([]User, error) // New function to fetch user from DB
+	GetAllRestaurants() ([]string,error)
 }
 
 type service struct {
 	db *sql.DB
-	mongoDB    *mongo.Client
+	mongoClient    *mongo.Client
 	mongoColl  *mongo.Collection
 }
 
@@ -71,7 +73,7 @@ func New() Service {
 
 	dbInstance = &service{
 		db: db,
-		mongoDB:    mongoClient,
+		mongoClient:    mongoClient,
 		mongoColl:  mongoCollection,
 	}
 	return dbInstance
@@ -104,6 +106,38 @@ func (s *service) GetAllUsers() ([]User, error) {
 	return users, nil
 }
 
+func(s *service) GetAllRestaurants()([]string, error){
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	collection := s.mongoClient.Database(mongoDB).Collection(mongoColl)
+
+	// Query all documents, selecting only the "name" field
+	cursor, err := collection.Find(ctx, bson.M{}, options.Find().SetProjection(bson.M{"name": 1, "_id": 0}))
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	var names []string
+	for cursor.Next(ctx) {
+		var result struct {
+			Name string `bson:"name"`
+		}
+		if err := cursor.Decode(&result); err != nil {
+			return nil, err
+		}
+		names = append(names, result.Name)
+	}
+
+	if err := cursor.Err(); err != nil {
+		return nil, err
+	}
+
+	return names, nil
+}
+
+
 // Health checks the health of the database connection by pinging the database.
 // It returns a map with keys indicating various health statistics.
 func (s *service) Health() map[string]string {
@@ -124,7 +158,7 @@ func (s *service) Health() map[string]string {
 	// Database is up, add more statistics
 	stats["status"] = "up"
 	stats["message"] = "It's healthy"
-
+ 
 	// Get database stats (like open connections, in use, idle, etc.)
 	dbStats := s.db.Stats()
 	stats["open_connections"] = strconv.Itoa(dbStats.OpenConnections)

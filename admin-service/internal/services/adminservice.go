@@ -38,3 +38,17 @@ func GetUsersData()(string, error){
 	return string(jsonData), nil
 
 }
+
+func GetAllRestaurants()(string, error){
+	db := database.New() // Get the DB service instance
+	restaurants, err := db.GetAllRestaurants();
+	if err != nil {
+		log.Println("Authentication error:", err)
+		return "", errors.New("invalid username or password")
+	}
+	jsonData,err := json.Marshal(restaurants)
+	if err != nil{
+		return "",err
+	}
+	return string(jsonData),nil
+}

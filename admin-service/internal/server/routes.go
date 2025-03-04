@@ -23,6 +23,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	r.GET("/health", s.healthHandler)
 	r.GET("/allusers",middleware.RoleMiddleware(),controllers.GetUsersData)
+	r.GET("/allrestaurants",middleware.RoleMiddleware(),controllers.GetAllRestaurants)
 	return r
 }
 

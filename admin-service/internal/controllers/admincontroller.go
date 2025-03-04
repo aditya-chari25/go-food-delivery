@@ -20,3 +20,12 @@ func GetUsersData (c *gin.Context){
 	}
 	c.JSON(http.StatusOK, gin.H{"Users Data": JsonData})
 }
+
+func GetAllRestaurants(c *gin.Context){
+	JsonData,err := services.GetAllRestaurants()
+	if err != nil{
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"Restaurants Data": JsonData})
+}
