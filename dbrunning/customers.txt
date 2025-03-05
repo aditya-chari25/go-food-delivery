@@ -1,0 +1,91 @@
+Customer ids :-
+a) User - [2,5,7,8,9,11,13,15,16,17,19,20];
+b) RestManager - [3,6,10,12,14,18];
+c) Admin - [1,4]
+
+Customer JSON :-
+{
+    username : user2;
+    address : 
+    rating : 
+}
+
+// Keeping address field since cutomer's order address can be different to customer's address
+Customer's Orders JSON :-
+{
+    username : 
+    orders:[
+        {
+            rest_name:" ",
+            rest_id:" ",
+            name : " ",
+            price : " ",
+            address : " "
+        }
+    ]
+}
+
+[
+    {
+        "username": "user2",
+        "address": "Sunset Heights, Hill Road, Bandra West, Mumbai, Maharashtra, India",
+        "rating": 4.5
+    },
+    {
+        "username": "user5",
+        "address": "Maple Residency, Marol Naka, Andheri East, Mumbai, Maharashtra, India",
+        "rating": 4.7
+    },
+    {
+        "username": "user7",
+        "address": "Seaside View Apartments, Shahid Bhagat Singh Road, Colaba, Mumbai, Maharashtra, India",
+        "rating": 4.9
+    },
+    {
+        "username": "user8",
+        "address": "Galaxy Towers, Ranade Road, Dadar West, Mumbai, Maharashtra, India",
+        "rating": 4.6
+    },
+    {
+        "username": "user9",
+        "address": "Emerald Heights, Aarey Road, Goregaon East, Mumbai, Maharashtra, India",
+        "rating": 4.8
+    },
+    {
+        "username": "user11",
+        "address": "Crystal Residency, Nehru Road, Vile Parle, Mumbai, Maharashtra, India",
+        "rating": 4.4
+    },
+    {
+        "username": "user13",
+        "address": "Skyline Towers, Senapati Bapat Marg, Lower Parel, Mumbai, Maharashtra, India",
+        "rating": 4.7
+    },
+    {
+        "username": "user15",
+        "address": "Palm View Apartments, Link Road, Malad West, Mumbai, Maharashtra, India",
+        "rating": 4.5
+    },
+    {
+        "username": "user16",
+        "address": "Lakeview Residency, Hiranandani Gardens, Powai, Mumbai, Maharashtra, India",
+        "rating": 4.8
+    },
+    {
+        "username": "user17",
+        "address": "Greenwood Heights, Akurli Road, Kandivali East, Mumbai, Maharashtra, India",
+        "rating": 4.9
+    },
+    {
+        "username": "user19",
+        "address": "Silver Sands Apartments, Juhu Tara Road, Juhu, Mumbai, Maharashtra, India",
+        "rating": 4.6
+    },
+    {
+        "username": "user20",
+        "address": "Ocean Breeze Towers, Annie Besant Road, Worli, Mumbai, Maharashtra, India",
+        "rating": 4.7
+    }
+]
+
+Usage of OpenStreetMap Nominatim for address conversion :-

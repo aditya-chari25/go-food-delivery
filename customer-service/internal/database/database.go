@@ -20,7 +20,7 @@ import (
 type Service interface {
 	Health() map[string]string
 	Close() error
-	PlaceOrder() ([]User, error) // New function to fetch user from DB
+	PlaceOrder() ([]string, error) // New function to fetch user from DB
 }
 
 type service struct {
@@ -78,15 +78,13 @@ func New() Service {
 	return dbInstance
 }
 
-func (s *service) PlaceOrder() (,error){
-	query := "INSERT "
-	var tmp = {
-		"id" : 1,
-		"customer_id":"",
-		"latitude":"",
-		"longitude":"",
-		""
-	}
+//Place Order, Track Order
+
+func (s *service) PlaceOrder(customerJSON string) ([]string,error){
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	collection := s.mongoClient.Database(mongoDB).Collection(mongoColl)
 }
 
 
