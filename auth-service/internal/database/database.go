@@ -90,8 +90,12 @@ func (s *service) GetUser(username string) (*model.User, error) {
 func (s *service) Signup(userJson model.SignUp) (string,error){
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	query := "INSERT INTO users (username, password, role) VALUES (?, ?, ?)"
-	_,err := s.db.Exec(query,userJson.Username,userJson.Password,"user")
+	query := "INSERT INTO users (username, password, role) VALUES ($1, $2, $3)"
+	tmp,err := s.db.Exec(query,userJson.Username,userJson.Password,"user")
+	if err != nil{
+		log.Println(err)
+	}
+	log.Println(tmp)
 	collection := s.mongoClient.Database(mongoDB).Collection(mongoColl)
 
 	inserted,err := collection.InsertOne(ctx,userJson);

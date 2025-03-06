@@ -15,9 +15,9 @@ type SignUp struct{
 	Username string `json:"username,omitempty"`
 	Password string `json:"password,omitempty"`
 	ID primitive.ObjectID `json:"_id,omitempty"bson:"_id,omitempty"`
-	Address string `json:"movie,omitempty`
+	Address string `json:"address,omitempty`
 	Rating float64 `json:"rating,omitempty`
-	Phonenumber int `json:"phone_number,omitempty"`
+	Phonenumber string `json:"phone_number,omitempty"`
 }
 
 // username : user2;
