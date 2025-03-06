@@ -96,9 +96,7 @@ func (s *service) Signup(userJson model.SignUp) (string,error){
 		log.Println(err)
 	}
 	log.Println(tmp)
-	collection := s.mongoClient.Database(mongoDB).Collection(mongoColl)
-
-	inserted,err := collection.InsertOne(ctx,userJson);
+	inserted,err := s.mongoColl.InsertOne(ctx,userJson);
 
 	if err != nil{
 		log.Fatal(err)

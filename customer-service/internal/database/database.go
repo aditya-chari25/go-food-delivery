@@ -8,11 +8,12 @@ import (
 	"os"
 	"strconv"
 	"time"
+	"customer-service/internal/model"
+	_ "github.com/jackc/pgx/v5/stdlib"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/bson"
+	// "go.mongodb.org/mongo-driver/bson"
     "go.mongodb.org/mongo-driver/mongo/options"
     // "go.mongodb.org/mongo-driver/v2/mongo/readpref"
-	_ "github.com/jackc/pgx/v5/stdlib"
 	_ "github.com/joho/godotenv/autoload"
 )
 
@@ -20,13 +21,14 @@ import (
 type Service interface {
 	Health() map[string]string
 	Close() error
-	PlaceOrder() ([]string, error) // New function to fetch user from DB
+	PlaceOrder(model.Orders) (string, error) // New function to fetch user from DB
 }
 
 type service struct {
 	db *sql.DB
 	mongoClient    *mongo.Client
-	mongoColl  *mongo.Collection
+	mongoCollectionRestaurant  *mongo.Collection
+	mongoCollectionOrders *mongo.Collection
 }
 
 type User struct {
@@ -43,8 +45,9 @@ var (
 	host       = os.Getenv("BLUEPRINT_DB_HOST")
 	schema     = os.Getenv("BLUEPRINT_DB_SCHEMA")
 	mongoURI  = os.Getenv("MONGO_URI")  // Example: "mongodb://localhost:27017"
-	mongoDB   = os.Getenv("MONGO_DB")   // Example: "food_delivery"
-	mongoColl = os.Getenv("MONGO_COLL") // Example: "users"
+	mongoDB   = os.Getenv("MONGO_DB")   // Example: "food-delivery"
+	mongoCollR = os.Getenv("MONGO_COLLR")
+	mongoCollO = os.Getenv("MONGO_COLLO")
 	dbInstance *service
 )
 
@@ -68,23 +71,29 @@ func New() Service {
 	}
 
 
-	mongoCollection := mongoClient.Database(mongoDB).Collection(mongoColl)
+	mongoCollectionRestaurant := mongoClient.Database(mongoDB).Collection(mongoCollR)
+	mongoCollectionOrders := mongoClient.Database(mongoDB).Collection(mongoCollO)
 
 	dbInstance = &service{
 		db: db,
 		mongoClient:    mongoClient,
-		mongoColl:  mongoCollection,
+		mongoCollectionRestaurant:  mongoCollectionRestaurant,
+		mongoCollectionOrders:	 mongoCollectionOrders,
 	}
 	return dbInstance
 }
 
 //Place Order, Track Order
 
-func (s *service) PlaceOrder(customerJSON string) ([]string,error){
+func (s *service) PlaceOrder(customerJSON model.Orders) (string,error){
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	collection := s.mongoClient.Database(mongoDB).Collection(mongoColl)
+	inserted, err := s.mongoCollectionOrders.InsertOne(ctx, customerJSON)
+    if err != nil {
+        return "",err
+    }
+    return fmt.Sprintf("Inserted Order with ID",inserted.InsertedID),nil
 }
 
 

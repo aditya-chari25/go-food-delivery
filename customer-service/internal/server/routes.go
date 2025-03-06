@@ -5,6 +5,8 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"customer-service/internal/middleware"
+	"customer-service/internal/controllers"
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
@@ -20,6 +22,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.GET("/", s.HelloWorldHandler)
 
 	r.GET("/health", s.healthHandler)
+	r.POST("/Orderfood",middleware.RoleMiddleware(),controllers.InsertOrder)
 
 	return r
 }
