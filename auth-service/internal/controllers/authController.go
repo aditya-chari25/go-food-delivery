@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"auth-service/internal/services"
+	"auth-service/internal/model"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -44,3 +45,17 @@ func Verfication(c *gin.Context){
 
 	c.JSON(http.StatusOK, gin.H{"username": retusername})
 }
+
+func Signup(c *gin.Context){
+	var customer model.SignUp
+	if err := c.ShouldBindJSON(&customer); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	inscustomer,err := services.SignUser(customer); 
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+	}
+	c.JSON(http.StatusOK, gin.H{"inserted":inscustomer})
+}
+

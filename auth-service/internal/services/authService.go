@@ -5,21 +5,13 @@ import (
 	"auth-service/internal/database"
 	"errors"
 	"auth-service/internal/utils"
+	"auth-service/internal/model"
 	"log"
 )
 
 // User struct to hold user information
-type User struct {
-	Username string
-	Password string
-	Role     string
-}
-
 // Mock user database (Replace with actual DB looku p)
-var users = map[string]User{
-	"admin": {Password: "password123", Role: "admin"},
-	"user":  {Password: "password456", Role: "user"},
-}
+
 
 // AuthenticateUser  checks user credentials and returns a JWT token
 func AuthenticateUser(username, password string) (string, error) {
@@ -51,4 +43,13 @@ func VerifyUser(token string)(string, error) {
 		log.Fatal("Error extracting JWT claims")
 	}
 	return username,nil
+}
+
+func SignUser(userJson model.SignUp)(string,error){
+	db := database.New();
+	msg,err := db.Signup(userJson);
+	if err != nil{
+		return "",err
+	}
+	return msg,nil
 }

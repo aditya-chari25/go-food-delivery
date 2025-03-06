@@ -1,6 +1,7 @@
 package database
 
 import (
+	"auth-service/internal/model"
 	"context"
 	"database/sql"
 	"fmt"
@@ -11,23 +12,23 @@ import (
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 	_ "github.com/joho/godotenv/autoload"
+	"go.mongodb.org/mongo-driver/mongo"
+	// "go.mongodb.org/mongo-driver/bson"
+    "go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // Service represents a service that interacts with a database.
 type Service interface {
 	Health() map[string]string
 	Close() error
-	GetUser(username string) (*User, error) // New function to fetch user from DB
+	GetUser(username string) (*model.User, error)
+	Signup(userJson model.SignUp) (string,error)
 }
 
 type service struct {
 	db *sql.DB
-}
-
-type User struct {
-	Username string
-	Password string
-	Role     string
+	mongoClient    *mongo.Client
+	mongoColl  *mongo.Collection
 }
 
 var (
@@ -37,6 +38,9 @@ var (
 	port       = os.Getenv("BLUEPRINT_DB_PORT")
 	host       = os.Getenv("BLUEPRINT_DB_HOST")
 	schema     = os.Getenv("BLUEPRINT_DB_SCHEMA")
+	mongoURI  = os.Getenv("MONGO_URI")  
+	mongoDB   = os.Getenv("MONGO_DB")   
+	mongoColl = os.Getenv("MONGO_COLL") 
 	dbInstance *service
 )
 
@@ -45,19 +49,33 @@ func New() Service {
 	if dbInstance != nil {
 		return dbInstance
 	}
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&search_path=%s", username, password, host, port, database, schema)
 	db, err := sql.Open("pgx", connStr)
 	if err != nil {
 		log.Fatal(err)
 	}
+	clientOptions := options.Client().ApplyURI(mongoURI)
+	mongoClient, err := mongo.Connect(ctx, clientOptions)
+	if err != nil {
+		log.Fatalf("MongoDB Connection Error: %v", err)
+	}
+
+
+	mongoCollection := mongoClient.Database(mongoDB).Collection(mongoColl)
+
 	dbInstance = &service{
 		db: db,
+		mongoClient:    mongoClient,
+		mongoColl:  mongoCollection,
 	}
 	return dbInstance
 }
 
-func (s *service) GetUser(username string) (*User, error) {
-	var user User
+func (s *service) GetUser(username string) (*model.User, error) {
+	var user model.User
 	query := "SELECT username, password, role FROM users WHERE username = $1"
 	err := s.db.QueryRow(query, username).Scan(&user.Username, &user.Password, &user.Role)
 	if err != nil {
@@ -67,6 +85,21 @@ func (s *service) GetUser(username string) (*User, error) {
 		return nil, err
 	}
 	return &user, nil
+}
+
+func (s *service) Signup(userJson model.SignUp) (string,error){
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	query := "INSERT INTO users (username, password, role) VALUES (?, ?, ?)"
+	_,err := s.db.Exec(query,userJson.Username,userJson.Password,"user")
+	collection := s.mongoClient.Database(mongoDB).Collection(mongoColl)
+
+	inserted,err := collection.InsertOne(ctx,userJson);
+
+	if err != nil{
+		log.Fatal(err)
+	}
+	return fmt.Sprintf("Inserted 1 user with id %v", inserted.InsertedID),nil
 }
 
 // Health checks the health of the database connection by pinging the database.

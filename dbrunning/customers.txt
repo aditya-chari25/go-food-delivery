@@ -6,8 +6,10 @@ c) Admin - [1,4]
 Customer JSON :-
 {
     username : user2;
+    password :
     address : 
     rating : 
+    phone_number :
 }
 
 // Keeping address field since cutomer's order address can be different to customer's address
@@ -19,6 +21,7 @@ Customer's Orders JSON :-
             rest_name:" ",
             rest_id:" ",
             name : " ",
+            quantity:
             price : " ",
             address : " "
         }
