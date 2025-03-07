@@ -88,7 +88,7 @@ func New() Service {
 func (s *service) PlaceOrder(customerJSON model.Orders) (string,error){
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-
+	log.Printf("here is the customer order json %v", customerJSON)
 	inserted, err := s.mongoCollectionOrders.InsertOne(ctx, customerJSON)
     if err != nil {
         return "",err

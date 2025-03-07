@@ -15,6 +15,6 @@ type OrderItem struct {
 
 type Orders struct {
 	ID       primitive.ObjectID `json:"_id,omitempty"bson:"_id,omitempty"`
-	username string             `json:"username,omitempty"`
+	Username string             `json:"username" validate:"required"`
 	Orders   []OrderItem        `json:"orders,omitempty"`
 }
