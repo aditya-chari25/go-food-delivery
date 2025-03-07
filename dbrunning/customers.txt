@@ -28,67 +28,97 @@ Customer's Orders JSON :-
     ]
 }
 
-[
+[[
     {
+        "userId": 2,
         "username": "user2",
         "address": "Sunset Heights, Hill Road, Bandra West, Mumbai, Maharashtra, India",
-        "rating": 4.5
+        "rating": 4.5,
+        "phonenumber": "+919876543210"
     },
     {
+        "userId": 5,
         "username": "user5",
         "address": "Maple Residency, Marol Naka, Andheri East, Mumbai, Maharashtra, India",
-        "rating": 4.7
+        "rating": 4.7,
+        "phonenumber": "+918765432109"
     },
     {
+        "userId": 7,
         "username": "user7",
         "address": "Seaside View Apartments, Shahid Bhagat Singh Road, Colaba, Mumbai, Maharashtra, India",
-        "rating": 4.9
+        "rating": 4.9,
+        "phonenumber": "+917654321098"
     },
     {
+        "userId": 8,
         "username": "user8",
         "address": "Galaxy Towers, Ranade Road, Dadar West, Mumbai, Maharashtra, India",
-        "rating": 4.6
+        "rating": 4.6,
+        "phonenumber": "+916543210987"
     },
     {
+        "userId": 9,
         "username": "user9",
         "address": "Emerald Heights, Aarey Road, Goregaon East, Mumbai, Maharashtra, India",
-        "rating": 4.8
+        "rating": 4.8,
+        "phonenumber": "+915432109876"
     },
     {
+        "userId": 11,
         "username": "user11",
         "address": "Crystal Residency, Nehru Road, Vile Parle, Mumbai, Maharashtra, India",
-        "rating": 4.4
+        "rating": 4.4,
+        "phonenumber": "+914321098765"
     },
     {
+        "userId": 13,
         "username": "user13",
         "address": "Skyline Towers, Senapati Bapat Marg, Lower Parel, Mumbai, Maharashtra, India",
-        "rating": 4.7
+        "rating": 4.7,
+        "phonenumber": "+913210987654"
     },
     {
+        "userId": 15,
         "username": "user15",
         "address": "Palm View Apartments, Link Road, Malad West, Mumbai, Maharashtra, India",
-        "rating": 4.5
+        "rating": 4.5,
+        "phonenumber": "+912109876543"
     },
     {
+        "userId": 16,
         "username": "user16",
         "address": "Lakeview Residency, Hiranandani Gardens, Powai, Mumbai, Maharashtra, India",
-        "rating": 4.8
+        "rating": 4.8,
+        "phonenumber": "+911098765432"
     },
     {
+        "userId": 17,
         "username": "user17",
         "address": "Greenwood Heights, Akurli Road, Kandivali East, Mumbai, Maharashtra, India",
-        "rating": 4.9
+        "rating": 4.9,
+        "phonenumber": "+919988776655"
     },
     {
+        "userId": 19,
         "username": "user19",
         "address": "Silver Sands Apartments, Juhu Tara Road, Juhu, Mumbai, Maharashtra, India",
-        "rating": 4.6
+        "rating": 4.6,
+        "phonenumber": "+918877665544"
     },
     {
+        "userId": 20,
         "username": "user20",
         "address": "Ocean Breeze Towers, Annie Besant Road, Worli, Mumbai, Maharashtra, India",
-        "rating": 4.7
+        "rating": 4.7,
+        "phonenumber": "+917766554433"
+    },
+    {
+        "userId": 21,
+        "username": "chari",
+        "password": "1234",
+        "address": "Flat No. 302, Shree Sai Residence, Bandra West, Mumbai - 400050, Maharashtra, India.",
+        "rating": 4.6,
+        "phonenumber": "+916789611012"
     }
 ]
-
-Usage of OpenStreetMap Nominatim for address conversion :-

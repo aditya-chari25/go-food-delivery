@@ -12,6 +12,9 @@ func ValidateOrder(order model.Orders) error {
     if order.Username == "" {
         return errors.New("username is required")
     }
+    if order.Userid <= 0 {
+        return errors.New("valid user ID is required")
+    }
     // Validate that we have at least one order item
     if len(order.Orders) == 0 {
         return errors.New("at least one order item is required")
