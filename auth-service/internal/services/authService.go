@@ -31,6 +31,20 @@ func AuthenticateUser(username, password string) (string, error) {
 	return utils.GenerateToken(user.Username, user.Role)
 }
 
+func AuthenticateDriver(username,password string)(string,error){
+	db := database.New()
+	user, err := db.GetDeliveryDriver(username)
+	if err != nil{
+		log.Println("Athenticate Driver:",err)
+		return "",errors.New("invalid username or password")
+	}
+	if user.Password != password {
+		return "", errors.New("invalid username or password")
+	}
+	return utils.GenerateToken(user.DeliveryID, "deliverydriver")
+
+}
+
 func VerifyUser(token string)(string, error) {
 	claims,err := utils.ValidateToken(token);
 	if err != nil{

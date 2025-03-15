@@ -9,11 +9,10 @@ import (
 	"os"
 	"strconv"
 	"time"
-
 	_ "github.com/jackc/pgx/v5/stdlib"
 	_ "github.com/joho/godotenv/autoload"
 	"go.mongodb.org/mongo-driver/mongo"
-	// "go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson"
     "go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -23,12 +22,14 @@ type Service interface {
 	Close() error
 	GetUser(username string) (*model.User, error)
 	Signup(userJson model.SignUp) (string,error)
+	GetDeliveryDriver (username string) (*model.AuthDelivery,error)
 }
 
 type service struct {
 	db *sql.DB
 	mongoClient    *mongo.Client
 	mongoColl  *mongo.Collection
+	mongoCollDD *mongo.Collection
 }
 
 var (
@@ -41,6 +42,7 @@ var (
 	mongoURI  = os.Getenv("MONGO_URI")  
 	mongoDB   = os.Getenv("MONGO_DB")   
 	mongoColl = os.Getenv("MONGO_COLL") 
+	mongoCollDA = os.Getenv("MONGO_COLLDA")
 	dbInstance *service
 )
 
@@ -65,11 +67,13 @@ func New() Service {
 
 
 	mongoCollection := mongoClient.Database(mongoDB).Collection(mongoColl)
+	mongoCollectionDeliveryDrivers := mongoClient.Database(mongoDB).Collection(mongoCollDA)
 
 	dbInstance = &service{
 		db: db,
 		mongoClient:    mongoClient,
 		mongoColl:  mongoCollection,
+		mongoCollDD: mongoCollectionDeliveryDrivers,
 	}
 	return dbInstance
 }
@@ -85,6 +89,17 @@ func (s *service) GetUser(username string) (*model.User, error) {
 		return nil, err
 	}
 	return &user, nil
+}
+
+func (s *service) GetDeliveryDriver(username string) (*model.AuthDelivery,error){
+	filter := bson.M{"username": username} // You can modify the filter as needed
+	var user *model.AuthDelivery
+	err := s.mongoCollDD.FindOne(context.TODO(), filter).Decode(&user)
+	if err != nil {
+		log.Fatal("Error finding users:", err)
+		return nil,err
+	}
+	return user,nil
 }
 
 func (s *service) Signup(userJson model.SignUp) (string,error){

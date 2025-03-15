@@ -11,6 +11,12 @@ type User struct {
 	Role     string
 }
 
+type AuthDelivery struct {
+	DeliveryID  string `json:"delivery_id,omitempty"`
+	Password    string `json:"password,omitempty"`
+	Phonenumber string `json:"phoneno,omitempty"`
+}
+
 type SignUp struct{
 	Username string `json:"username,omitempty"`
 	Password string `json:"password,omitempty"`

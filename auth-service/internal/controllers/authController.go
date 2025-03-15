@@ -29,6 +29,23 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"token": token})
 }
 
+func DriverLogin(c *gin.Context){
+	var credentials struct {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
+	if err := c.ShouldBindJSON(&credentials); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	token, err := services.AuthenticateDriver(credentials.Username, credentials.Password)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK,gin.H{"token":token})
+}
+
 func Verfication(c *gin.Context){
 	var credentials struct{
 		Token string `json:"token"`
