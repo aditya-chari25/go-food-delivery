@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package delivery;
+
+option go_package = "internal/proto;deliverypb";
+
+service DeliveryService {
+    rpc CreateDelivery (DeliveryRequest) returns (DeliveryResponse);
+}
+
+message DeliveryRequest {
+    string order_id = 1;
+    string customer_id = 2;
+    string delivery_address = 3;
+}
+
+message DeliveryResponse {
+    string status = 1;
+}
