@@ -23,6 +23,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	r.GET("/health", s.healthHandler)
 	r.POST("/Orderfood",middleware.RoleMiddleware(),controllers.InsertOrder)
+	r.POST("/RestaurantMenu",middleware.RoleMiddleware(),controllers.ReturnMenu)
 
 	return r
 }

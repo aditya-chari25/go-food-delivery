@@ -11,7 +11,7 @@ import (
 	"customer-service/internal/model"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"go.mongodb.org/mongo-driver/mongo"
-	// "go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson"
     "go.mongodb.org/mongo-driver/mongo/options"
     // "go.mongodb.org/mongo-driver/v2/mongo/readpref"
 	_ "github.com/joho/godotenv/autoload"
@@ -22,6 +22,7 @@ type Service interface {
 	Health() map[string]string
 	Close() error
 	PlaceOrder(model.Orders) (string, error) // New function to fetch user from DB
+	RetRestMenu(model.RestMenu)(*model.Restaurant,error)
 }
 
 type service struct {
@@ -94,6 +95,22 @@ func (s *service) PlaceOrder(customerJSON model.Orders) (string,error){
         return "",err
     }
     return fmt.Sprintf("Inserted Order with ID",inserted.InsertedID),nil
+}
+
+func (s *service) RetRestMenu(MenuJSON model.RestMenu) (*model.Restaurant,error){
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	log.Printf("here is the customer order json %v", MenuJSON)
+	filter := bson.M{"restaurant_id": MenuJSON.RestaurantID}
+	opts := options.FindOne().SetProjection(bson.M{"menus": 1, "_id": 0})
+	var restaurant model.Restaurant
+	// menu,err := s.mongoCollectionRestaurant.Find(ctx,filter,opts)
+	err := s.mongoCollectionRestaurant.FindOne(ctx, filter, opts).Decode(&restaurant)
+	if err != nil {
+		return nil, fmt.Errorf("error finding restaurant: %w", err)
+	}
+
+	return &restaurant, nil
 }
 
 

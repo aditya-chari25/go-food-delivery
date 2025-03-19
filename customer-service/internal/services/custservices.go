@@ -17,3 +17,12 @@ func PlaceOrder(customerJSON model.Orders)(string,error){
 	}
 	return orderplaced,nil
 }
+
+func RestMenu (RestMenuJSON model.RestMenu)(*model.Restaurant,error){
+	db := database.New();
+	menu,error := db.RetRestMenu(RestMenuJSON)
+	if error != nil{
+		return  nil,error
+	}
+	return menu,nil
+}

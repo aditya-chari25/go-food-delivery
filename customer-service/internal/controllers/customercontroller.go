@@ -28,3 +28,17 @@ func InsertOrder(c *gin.Context){
 	c.JSON(http.StatusOK, gin.H{"inserted":insertedOrder})
 }
 
+func ReturnMenu(c *gin.Context){
+	var restMenu model.RestMenu
+	if err := c.ShouldBindJSON(&restMenu); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	returnmenu,err := services.RestMenu(restMenu)
+	if err != nil{
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})	
+	}
+	
+	c.JSON(http.StatusOK, gin.H{"Menu":returnmenu})
+}
+

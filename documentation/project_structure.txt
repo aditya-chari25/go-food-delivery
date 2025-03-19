@@ -18,17 +18,10 @@ food-delivery-backend/
 │   ├── go.mod
 │   ├── go.sum
 │
-│── customer-service/             # Manages customers & restaurants
+│── customer-service/             # Manages customers & restaurants & give restaurant orders
 │   ├── cmd/api/main.go
 │   ├── internal/controllers/customerController.go
 │   ├── internal/services/customerService.go
-│   ├── go.mod
-│   ├── go.sum
-│
-│── order-service/                # Handles orders (Only for Restaurant Managers)
-│   ├── cmd/api/main.go
-│   ├── internal/controllers/orderController.go
-│   ├── internal/services/orderService.go
 │   ├── go.mod
 │   ├── go.sum
 │
@@ -39,10 +32,10 @@ food-delivery-backend/
 │   ├── go.mod
 │   ├── go.sum
 │
-│── menu-service/                 # Manages restaurant menus
+│── order-service/                 # Restaurant managers check orders
 │   ├── cmd/api/main.go
-│   ├── internal/controllers/menuController.go
-│   ├── internal/services/menuService.go
+│   ├── internal/controllers/orderController.go
+│   ├── internal/services/orderService.go
 │   ├── go.mod
 │   ├── go.sum
 │
